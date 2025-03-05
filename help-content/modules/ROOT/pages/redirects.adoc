@@ -8,7 +8,7 @@ image::redirects.jpg[role=zoom]
 endif::[]
 
 ifdef::help[]
-See link:https://docs.magnolia-cms.com/paas/cockpit/sections/networking/#_create_redirects[Docs: Redirects guide^] for more details.
+See link:https://magnolia-docs-preview.netlify.app/cockpit/redirects/[Docs: Redirects guide^] for more details.
 endif::[]
 
 == Good to knows
