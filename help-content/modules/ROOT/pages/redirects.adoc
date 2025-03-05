@@ -3,13 +3,16 @@
 You can view redirects that you have created or add them directly yourself from the Cockpit. You must publish any changes you make to redirects.
 Use the *Add* button to create a new redirect, *Upload* to import redirects from a file, and *Publish* to apply changes.
 
+ifndef::help[]
 image::redirects.jpg[role=zoom]
+endif::[]
+
+ifdef::help[]
+See link:https://docs.magnolia-cms.com/paas/cockpit/sections/networking/#_create_redirects[Docs: Redirects guide^] for more details.
+endif::[]
 
 == Good to knows
 
 * The redirects server is a proxy server.
 * Redirects are evaluated in order of appearance when entered. The first match is accepted.
 * We use the Source URL to detect duplicate entries when you add a single redirect or batch import redirects (CSV).
-* If the redirect you enter is a duplicate, you get a 409 error code, showing the duplicate already exists. If there are any duplicates in a batch import of redirects, the entire batch is rejected. However, we notify you in the cockpit of the specific duplicate entries so you can remove them from the batch.
-* Only `3xx` status codes are acceptable. 
-Different codes affect the browser in different ways. For more, see here.

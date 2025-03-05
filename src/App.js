@@ -19,7 +19,8 @@ import {
   Paper,
 } from '@mui/material';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import { helpContent } from './help-content'; // Generated file
+import Joyride from 'react-joyride';
+import { helpContent } from './help-content';
 import HelpModal from './HelpModal';
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
   const [helpOpen, setHelpOpen] = useState(false);
   const [helpKey, setHelpKey] = useState(null);
   const [selectedNav, setSelectedNav] = useState('Cockpit Controls');
+  const [runTour, setRunTour] = useState(false);
 
   const navItems = [
     'Networking',
@@ -36,32 +38,10 @@ function App() {
     'Redirects',
   ];
 
-  // Dummy data for the redirects table
   const redirectData = [
-    {
-      source: '/old-page',
-      target: '/new-page',
-      code: '301',
-      status: 'Active',
-      created: '2025-03-01',
-      updated: '2025-03-04',
-    },
-    {
-      source: '/blog/post1',
-      target: '/articles/post1',
-      code: '302',
-      status: 'Inactive',
-      created: '2025-02-15',
-      updated: '2025-03-02',
-    },
-    {
-      source: '/shop/item',
-      target: '/store/product',
-      code: '301',
-      status: 'Active',
-      created: '2025-01-10',
-      updated: '2025-03-05',
-    },
+    { source: '/old-page', target: '/new-page', code: '301', status: 'Active', created: '2025-03-01', updated: '2025-03-04' },
+    { source: '/blog/post1', target: '/articles/post1', code: '302', status: 'Inactive', created: '2025-02-15', updated: '2025-03-02' },
+    { source: '/shop/item', target: '/store/product', code: '301', status: 'Active', created: '2025-01-10', updated: '2025-03-05' },
   ];
 
   const handleHelpClick = (key) => {
@@ -69,59 +49,58 @@ function App() {
     setHelpOpen(true);
   };
 
+  const handleDeepDive = () => {
+    setHelpOpen(false);
+    setRunTour(true);
+  };
+
+  const tourSteps = [
+    { target: '.redirect-source', content: <div dangerouslySetInnerHTML={{ __html: helpContent['redirects-deep-dive']?.source }} /> },
+    { target: '.redirect-target', content: <div dangerouslySetInnerHTML={{ __html: helpContent['redirects-deep-dive']?.target }} /> },
+    { target: '.redirect-code', content: <div dangerouslySetInnerHTML={{ __html: helpContent['redirects-deep-dive']?.code }} /> },
+    { target: '.redirect-status', content: <div dangerouslySetInnerHTML={{ __html: helpContent['redirects-deep-dive']?.status }} /> },
+    { target: '.redirect-created', content: <div dangerouslySetInnerHTML={{ __html: helpContent['redirects-deep-dive']?.created }} /> },
+    { target: '.redirect-updated', content: <div dangerouslySetInnerHTML={{ __html: helpContent['redirects-deep-dive']?.updated }} /> },
+  ];
+
   return (
     <Box sx={{ display: 'flex', height: '100vh' }}>
-      {/* Sidebar Navigation */}
-      <Box
-        sx={{
-          width: 250,
-          bgcolor: '#f5f5f5',
-          p: 2,
-          borderRight: '1px solid #ddd',
-        }}
-      >
-        <Typography variant="h6" gutterBottom>
-          Navigation
-        </Typography>
+      <Joyride
+        steps={tourSteps}
+        run={runTour}
+        continuous
+        showProgress
+        showSkipButton
+        callback={(data) => { if (data.status === 'finished' || data.status === 'skipped') setRunTour(false); }}
+        styles={{ options: { zIndex: 10000 } }}
+      />
+      <Box sx={{ width: 250, bgcolor: '#f5f5f5', p: 2, borderRight: '1px solid #ddd' }}>
+        <Typography variant="h6" gutterBottom>Navigation</Typography>
         <List>
           {navItems.map((item) => (
             <ListItem
               key={item}
               button
               onClick={() => setSelectedNav(item)}
-              sx={{
-                bgcolor: selectedNav === item ? '#e0e0e0' : 'inherit',
-                '&:hover': { bgcolor: '#e0e0e0' },
-              }}
+              sx={{ bgcolor: selectedNav === item ? '#e0e0e0' : 'inherit', '&:hover': { bgcolor: '#e0e0e0' } }}
             >
               <ListItemText primary={item} />
             </ListItem>
           ))}
         </List>
       </Box>
-
-      {/* Main Content Area */}
       <Box sx={{ flexGrow: 1, p: 4, overflowY: 'auto' }}>
-        <Typography variant="h4" gutterBottom>
-          {selectedNav}
-        </Typography>
-
+        <Typography variant="h4" gutterBottom>{selectedNav}</Typography>
         {selectedNav === 'Cockpit Controls' ? (
           <>
-            {/* Text Field with Help */}
             <Box sx={{ mb: 2, display: 'flex', alignItems: 'center' }}>
               <TextField label="Input Field" variant="outlined" sx={{ mr: 1 }} />
               <IconButton onClick={() => handleHelpClick('field-help')}>
                 <HelpOutlineIcon />
               </IconButton>
             </Box>
-
-            {/* Tabs with Help */}
             <Box sx={{ mb: 2, display: 'flex', alignItems: 'center' }}>
-              <Tabs
-                value={tabValue}
-                onChange={(e, newValue) => setTabValue(newValue)}
-              >
+              <Tabs value={tabValue} onChange={(e, newValue) => setTabValue(newValue)}>
                 <Tab label="Tab 1" />
                 <Tab label="Tab 2" />
               </Tabs>
@@ -129,12 +108,8 @@ function App() {
                 <HelpOutlineIcon />
               </IconButton>
             </Box>
-
-            {/* Button with Help */}
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Button variant="contained" sx={{ mr: 1 }}>
-                Action Button
-              </Button>
+              <Button variant="contained" sx={{ mr: 1 }}>Action Button</Button>
               <IconButton onClick={() => handleHelpClick('button-help')}>
                 <HelpOutlineIcon />
               </IconButton>
@@ -142,7 +117,6 @@ function App() {
           </>
         ) : selectedNav === 'Redirects' ? (
           <>
-            {/* Redirects Buttons with Help */}
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
               <Button variant="contained">Add</Button>
               <Button variant="contained">Upload</Button>
@@ -151,18 +125,16 @@ function App() {
                 <HelpOutlineIcon />
               </IconButton>
             </Box>
-
-            {/* Redirects Table */}
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650 }} aria-label="redirects table">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Source</TableCell>
-                    <TableCell>Target</TableCell>
-                    <TableCell>Code</TableCell>
-                    <TableCell>Status</TableCell>
-                    <TableCell>Created</TableCell>
-                    <TableCell>Updated</TableCell>
+                    <TableCell className="redirect-source">Source</TableCell>
+                    <TableCell className="redirect-target">Target</TableCell>
+                    <TableCell className="redirect-code">Code</TableCell>
+                    <TableCell className="redirect-status">Status</TableCell>
+                    <TableCell className="redirect-created">Created</TableCell>
+                    <TableCell className="redirect-updated">Updated</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -181,16 +153,13 @@ function App() {
             </TableContainer>
           </>
         ) : (
-          <Typography variant="body1">
-            Placeholder content for {selectedNav}. Add your content here!
-          </Typography>
+          <Typography variant="body1">Placeholder content for {selectedNav}. Add your content here!</Typography>
         )}
-
-        {/* Help Modal */}
         <HelpModal
           open={helpOpen}
           onClose={() => setHelpOpen(false)}
           content={helpKey ? helpContent[helpKey] : ''}
+          onDeepDive={helpKey === 'redirects' ? handleDeepDive : null}
         />
       </Box>
     </Box>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Box, IconButton, Typography } from '@mui/material';
+import { Modal, Box, IconButton, Typography, Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 const style = {
@@ -7,17 +7,17 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: '90%', // Use percentage for responsiveness
-  maxWidth: 500, // Cap the width for larger screens
-  maxHeight: '80vh', // Limit height to 80% of viewport height
+  width: '90%',
+  maxWidth: 500,
+  maxHeight: '80vh',
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
-  overflowY: 'auto', // Enable vertical scrolling if content overflows
+  overflowY: 'auto',
 };
 
-const HelpModal = ({ open, onClose, content }) => (
+const HelpModal = ({ open, onClose, content, onDeepDive }) => (
   <Modal
     open={open}
     onClose={onClose}
@@ -36,6 +36,15 @@ const HelpModal = ({ open, onClose, content }) => (
         variant="body1"
         dangerouslySetInnerHTML={{ __html: content }}
       />
+      {onDeepDive && (
+        <Button
+          variant="outlined"
+          sx={{ mt: 2 }}
+          onClick={onDeepDive}
+        >
+          Walkthrough
+        </Button>
+      )}
     </Box>
   </Modal>
 );

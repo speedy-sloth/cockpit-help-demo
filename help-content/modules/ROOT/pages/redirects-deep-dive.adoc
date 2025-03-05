@@ -1,0 +1,19 @@
+= Redirects Deep Dive
+
+== Source
+The *Source* column shows the original URL that users visit. This is where the redirect begins.
+
+== Target
+The *Target* column lists the new URL where users are sent. This is the destination of the redirect.
+
+== Code
+The *Code* column indicates the HTTP status code (e.g., 301 for permanent, 302 for temporary). It tells browsers how to handle the redirect.
+
+== Status
+The *Status* column shows if the redirect is *Active* or *Inactive*. Only active redirects are applied.
+
+== Created
+The *Created* column records when the redirect was first added. Useful for tracking history!
+
+== Updated
+The *Updated* column shows the last time the redirect was modified. Keeps you up-to-date!
