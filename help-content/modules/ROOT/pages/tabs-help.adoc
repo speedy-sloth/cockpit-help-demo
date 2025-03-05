@@ -1,0 +1,4 @@
+= Tabs Help
+
+Switch between *Tabs* to view different sections. 
+Click a tab to activate it.

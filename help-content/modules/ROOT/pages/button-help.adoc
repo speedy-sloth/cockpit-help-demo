@@ -1,0 +1,4 @@
+= Button Help
+
+Click the *Button* to perform an action. 
+It's that simple, baby.
